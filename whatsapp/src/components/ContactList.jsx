@@ -23,14 +23,15 @@ const ProfileImage = styled.img`
 const SearchBox = styled.div`
     background: #f6f6f6;
     padding:10px;
+    display: flex;
 `;
 const SearchContainer = styled.div`
     display: flex;
     flex-direction: row;
     background: white;
-    border-radius: 16px;
+    border-radius: 8px;
     width: 100%;
-    padding: 5px 4px;
+    padding: 5px 10px;
 `;
 const SearchIcon = styled.img`
     width: 28px;
