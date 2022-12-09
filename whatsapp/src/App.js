@@ -7,7 +7,7 @@ const Container = styled.div`
   flex-direction: row;
   height: 100vh;
   width: 100%;
-  background: #f8f9fp;
+  background: #f8f9fb;
 `;
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
       <Container>
         <ContactList/>
         <Conversation/>
-        Learn React 
       </Container>
     </div>
   );
