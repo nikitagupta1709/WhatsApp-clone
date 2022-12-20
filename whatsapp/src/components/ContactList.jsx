@@ -48,7 +48,9 @@ export const SearchInput = styled.input`
 `;
 
 
-export const ContactList = () => {
+export const ContactList = (props) => {
+    const {setChat} = props;
+
   return (
       <Container>
         <ProfileInfoDiv>
@@ -61,7 +63,7 @@ export const ContactList = () => {
             </SearchContainer>
         </SearchBox>
         { contactList.map((userData) => (
-             <Contact userData={userData}/>
+             <Contact userData={userData} setChat={setChat}/>
         ))}
       </Container>
   )

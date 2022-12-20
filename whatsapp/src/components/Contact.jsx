@@ -43,10 +43,10 @@ const MessageTime = styled.span`
 `;
 
 export const Contact = (props) => {
-    const { userData } = props;
+    const { userData, setChat } = props;
 
   return (
-    <ContactItem>
+    <ContactItem onClick={() => setChat(userData)}>
         <ProfileIcon src={userData.profilePic} />
         <ContactInfo>
             <ContactName>{userData.name}</ContactName>

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
+import EmojiPicker from 'emoji-picker-react';
 import { SearchContainer, SearchInput } from './ContactList';
 import { messagesList } from '../mockData';
 
@@ -58,26 +59,51 @@ const Message = styled.div`
   border-radius: 4px;
 `
 
-export const Conversation = () => {
+export const Conversation = (props) => {
+  const {selectedChat} = props;
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [text, setText] = useState("");
+  const [message,setMessage] = useState(messagesList);
+
+  const onEmojiClick =(emojiObj) =>{
+    setText(text+emojiObj.emoji);
+    setPickerVisible(false)
+  }
+
+  const onEnterPress =(event) => {
+    if(event.key === "Enter"){
+      const messages = [...message];
+      messages.push({
+        id:0,
+        messageType:"TEXT",
+        text,
+        senderID: 0,
+        addedOn: "12:02 PM",
+      });
+      setMessage(messages);
+      setText("");
+      
+    }
+  }
+
   return (
     <Container>
         <ProfileHeader>
-          <ProfileImage src="/profile/elon.jpg"/>
-          Elon Musk
+          <ProfileImage src={selectedChat.profilePic}/>
+          {selectedChat.name}
         </ProfileHeader> 
         <MessageContainer>
-          {messagesList.map((messageData) => (
+          {message.map((messageData) => (
             <MessageDiv isYours={messageData.senderID === 0}>
               <Message isYours={messageData.senderID === 0}>{messageData.text}</Message>
             </MessageDiv>
-          ))
-
-          }
+          ))}
+          {pickerVisible && (<EmojiPicker width="40%" margin="auto" height="1000px" onEmojiClick={onEmojiClick} />)}
         </MessageContainer>
         <ChatBox>
           <SearchContainer>
-            <EmojiImage src={"/data.svg"} />
-            <SearchInput placeholder='Type a message'/>
+            <EmojiImage src={"/data.svg"} onClick={()=>setPickerVisible(!pickerVisible)}/>
+            <SearchInput placeholder='Type a message' value={text} onKeyDown={onEnterPress} onChange={(e) => setText(e.target.value)}/>
           </SearchContainer>
         </ChatBox>
 
