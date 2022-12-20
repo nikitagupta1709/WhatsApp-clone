@@ -4,11 +4,13 @@ import styled from "styled-components";
 const ContactItem = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
     border-bottom: 1px solid #f2f2f2;
-    cursor: pointer;
     background: white;
+    cursor: pointer;
     padding: 15px 12px;
+    :hover{
+        background:#ebebeb;
+    }
 `;
 const ProfileIcon = styled.img`
     width: 38px;
@@ -20,7 +22,6 @@ const ContactInfo = styled.div`
     flex-direction: column;
     width: 100%;
     margin: 0 12px;
-    font-family: sans-serif;
 `;
 const ContactName = styled.span`
     width: 100%;
@@ -34,21 +35,24 @@ const MessageText = styled.span`
     color: rgba(0, 0, 0, 0.8);
 `;
 const MessageTime = styled.span`
-    font-size: 12px;
+    font-size : 12px;
     margin-right: 10px;
-    color: rgba(0, 0, 0, 0.45);
+    color:rgba(0,0,0,0.45)
+    white-space:nowrap;
 
 `;
 
-export const Contact = () => {
+export const Contact = (props) => {
+    const { userData } = props;
+
   return (
     <ContactItem>
-        <ProfileIcon src='/profile/elon.jpg' />
+        <ProfileIcon src={userData.profilePic} />
         <ContactInfo>
-            <ContactName>hvygv</ContactName>
-            <MessageText>iuhih</MessageText>
+            <ContactName>{userData.name}</ContactName>
+            <MessageText>{userData?.lastText}</MessageText>
         </ContactInfo>
-        <MessageTime>05:24PM</MessageTime>
+        <MessageTime>{userData?.lastTextTime}</MessageTime>
     </ContactItem>
     
   )

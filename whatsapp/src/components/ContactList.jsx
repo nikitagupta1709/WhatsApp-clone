@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 import { Contact } from './Contact';
+import { contactList } from '../mockData';
 
 const Container = styled.div`
     display: flex;
@@ -43,6 +44,7 @@ export const SearchInput = styled.input`
     outline:none;
     font-size:15px;
     border: none;
+    margin-left:10px; 
 `;
 
 
@@ -58,7 +60,9 @@ export const ContactList = () => {
                 <SearchInput placeholder="Search or Start a new chat"/>
             </SearchContainer>
         </SearchBox>
-        <Contact />
+        { contactList.map((userData) => (
+             <Contact userData={userData}/>
+        ))}
       </Container>
   )
 }

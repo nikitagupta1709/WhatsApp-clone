@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 import { SearchContainer, SearchInput } from './ContactList';
+import { messagesList } from '../mockData';
 
 const Container = styled.div`
     display: flex;
@@ -34,6 +35,27 @@ const EmojiImage = styled.img`
   width: 28px;
   height: 28px;
   opacity: 0.4;
+  cursur:pointer;
+`
+const MessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #e5ddd6;
+  overflow-y: auto;
+`
+const MessageDiv = styled.div`
+  justify-content: ${(props) => (props.isYours ? "flex-end":"flex-start")};
+  display: flex;
+  margin: 5px 15px;
+`
+const Message = styled.div`
+  max-width:50%;
+  background:${(props) => (props.isYours ? "#daf8cb":"white")};
+  color: #303030;
+  padding: 8px 10px;
+  font-size:14px;
+  border-radius: 4px;
 `
 
 export const Conversation = () => {
@@ -43,6 +65,15 @@ export const Conversation = () => {
           <ProfileImage src="/profile/elon.jpg"/>
           Elon Musk
         </ProfileHeader> 
+        <MessageContainer>
+          {messagesList.map((messageData) => (
+            <MessageDiv isYours={messageData.senderID === 0}>
+              <Message isYours={messageData.senderID === 0}>{messageData.text}</Message>
+            </MessageDiv>
+          ))
+
+          }
+        </MessageContainer>
         <ChatBox>
           <SearchContainer>
             <EmojiImage src={"/data.svg"} />
