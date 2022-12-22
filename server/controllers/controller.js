@@ -15,6 +15,8 @@ export const loginUser = async(req, res) => {
         phoneNumber: requestData.phoneNumber,
         password: requestData.password,
     });
+    delete isUserExist.password;
+    
     if(!isUserExist)
         return sendError(res, {}, "Invalid Credentials");
     sendResponse(res, isUserExist, "User logged in successfully", true, 200);
@@ -45,5 +47,10 @@ export const searchUser = async(req, res) => {
 }
 
 export const sendMesage = async(req, res) => {
-
+    const requestData = req.body;
+    await channelModel.findOneAndUpdateData(
+        { _id: requestData.channelId },
+        { $push: {messages: requestData.messages }}
+    );
+    sendResponse(res, {}, "Message send successfully", true, 200);
 }
