@@ -21,15 +21,27 @@ export const loginUser = async(req, res) => {
 }
 
 export const createChannel = async(req, res) => {
-
+    const channel = new channelModel(req.body);
+    await channel.saveData();
+    sendResponse(res, channel, "Channel created successfully", true, 200);
 }
 
 export const getChannelList = async(req, res) => {
-
+    const requestData = req.query;
+    const channelList = await channelModel.findData({
+        "channelUsers._id": await requestData.userId,
+    });
+    sendResponse(res, channelList, "Channel list fetched", true, 200);
 }
 
 export const searchUser = async(req, res) => {
-
+    const requestData = req.query;
+    const isUserExist = await userModel.findOneData({
+        phoneNumber: requestData.phone,
+    });
+    if(!isUserExist)
+        return sendError(res, {}, "No user found");
+    sendResponse(res, isUserExist, "User found successfully", true, 200);
 }
 
 export const sendMesage = async(req, res) => {

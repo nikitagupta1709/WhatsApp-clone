@@ -1,4 +1,5 @@
 import { sendError } from "../utility/index.js";
+import * as yup from 'yup';
 
 export const validateCreateUser = async (req, res, next) => {
 
@@ -37,7 +38,6 @@ export const validateSearchUser = async (req, res, next) => {
     await validate(schema, req.query, res, next)
 }
 export const validateCreateChannel = async (req, res, next) => {
-
     const schema = yup.object().shape({
         channelUsers: yup
         .array()
@@ -52,7 +52,7 @@ export const validateCreateChannel = async (req, res, next) => {
         .required(),
     });
 
-    await validate(schema, req.query, res, next)
+    await validate(schema, req.body, res, next)
 }
 
 export const validateAddMessage = async (req, res, next) => {
