@@ -1,17 +1,17 @@
-import * as Controller from '../controllers';
-import * as Validation from '../utility/validation'
+import {validateCreateUser, validateLogin, validateCreateChannel, validateSearchUser, validateGetChannelList, validateAddMessage  } from '../utility/validation.js'
+import { createChannel, createUser, getChannelList, loginUser, searchUser, sendMesage } from '../controllers/controller.js';
 
 const applyRoutes = (app) => {
     app.get('/', (req, res) => {
         res.send(`API is running fine`)
     })
-    app.post('/user', Validation.validateCreateUser ,Controller.createUser)
+    app.post('/user', validateCreateUser ,createUser)
 
-    app.post('/login', Validation.validateLogin, Controller.loginUser)
-    app.post('/channel', Validation.validateCreateChannel, Controller.createChannel)
-    app.get('/search-user', Validation.validateSearchUser, Controller.getChannelList)
-    app.get('/channel-list', Validation.validateGetChannelList, Controller.searchUser)
-    app.post('/message', Validation.validateAddMessage, Controller.sendMesage)
+    app.post('/login', validateLogin, loginUser)
+    app.post('/channel', validateCreateChannel, createChannel)
+    app.get('/search-user', validateSearchUser, getChannelList)
+    app.get('/channel-list', validateGetChannelList, searchUser)
+    app.post('/message', validateAddMessage, sendMesage)
 
 };
 export default applyRoutes;

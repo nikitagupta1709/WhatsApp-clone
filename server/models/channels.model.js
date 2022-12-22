@@ -40,5 +40,5 @@ channelSchema.static({
     },
 })
 
-const channelModel = mongoose.model("wc-user", channelSchema)
+const channelModel = mongoose.model("wc-channel", channelSchema)
 export default channelModel;
