@@ -1,25 +1,17 @@
+import * as Controller from '../controllers';
+import * as Validation from '../utility/validation'
+
 const applyRoutes = (app) => {
     app.get('/', (req, res) => {
         res.send(`API is running fine`)
     })
-    app.post('/user', (req, res) => {
-        res.send(`user`)
-    })
-    app.post('/login', (req, res) => {
-        res.send(`login`)
-    })
-    app.post('/channel', (req, res) => {
-        res.send(`channel`)
-    })
-    app.get('/search-user', (req, res) => {
-        res.send(`search-user`)
-    })
-    app.get('/channel-list', (req, res) => {
-        res.send(`channel-list`)
-    })
-    app.post('/message', (req, res) => {
-        res.send(`message`)
-    })
+    app.post('/user', Validation.validateCreateUser ,Controller.createUser)
+
+    app.post('/login', Validation.validateLogin, Controller.loginUser)
+    app.post('/channel', Validation.validateCreateChannel, Controller.createChannel)
+    app.get('/search-user', Validation.validateSearchUser, Controller.getChannelList)
+    app.get('/channel-list', Validation.validateGetChannelList, Controller.searchUser)
+    app.post('/message', Validation.validateAddMessage, Controller.sendMesage)
 
 };
 export default applyRoutes;

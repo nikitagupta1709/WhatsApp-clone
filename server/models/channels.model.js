@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const channelSchema = new mongoose.Schema({
-    channelUser: [
+    channelUsers: [
         {
             _id: {type: String, default: ''},
             name : {type:String, default: ''},
@@ -10,7 +10,7 @@ const channelSchema = new mongoose.Schema({
     ],
     messages: [
         {
-            senderId: {type: String, default: ''},
+            senderID: {type: String, default: ''},
             message : {type:String, default: ''},
             addedOn : {type: Number, default: Date.now()}
         }
