@@ -49,12 +49,12 @@ export const SearchInput = styled.input`
 
 
 export const ContactList = (props) => {
-    const {setChat} = props;
+    const {setChat, userInfo} = props;
 
   return (
       <Container>
         <ProfileInfoDiv>
-            <ProfileImage src="/profile/elon.jpg"/>
+            <ProfileImage  src={userInfo.picture} referrerpolicy="no-referrer"/>
         </ProfileInfoDiv>
         <SearchBox>
             <SearchContainer>
@@ -63,7 +63,7 @@ export const ContactList = (props) => {
             </SearchContainer>
         </SearchBox>
         { contactList.map((userData) => (
-             <Contact userData={userData} setChat={setChat}/>
+             <Contact key={userData._id} userData={userData} setChat={setChat}/>
         ))}
       </Container>
   )

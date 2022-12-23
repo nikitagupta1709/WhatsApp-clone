@@ -32,14 +32,15 @@ const ChatPlaceholder = styled.img`
   object-fit: contain;
 `;
 
-function App() {
+function App({userInfo}) {
   const [selectedChat, setChat ] = useState();
 
   return (
     <div className="App">
       <Container>
-        <ContactList setChat={setChat}/>
-        {selectedChat? <Conversation selectedChat={selectedChat}/>: <Placeholder>
+        <ContactList setChat={setChat} userInfo={userInfo}/>
+        {selectedChat? 
+        <Conversation selectedChat={selectedChat} />: <Placeholder>
             <ChatPlaceholder src="/welcome_placeholder.jpg" />
             <span>Keep your phone connected</span>
             Whatsapp connects to your phone to sync messages.
