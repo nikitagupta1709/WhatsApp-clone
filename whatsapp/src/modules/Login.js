@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import jwt_decode from "jwt-decode";
 import App from "../App.js"
 import cookieManager from '../manager/cookieManager.js';
+import { httpManager } from '../manager/httpManager.js';
 
 const Container = styled.div`
     display:flex;
@@ -67,8 +68,12 @@ export const Login = () => {
         // console.log(responseData.credential);
         let decoded = jwt_decode(responseData.credential);
         // console.log(decoded);
+        await httpManager.createUser({
+            email: decoded.email,
+            name: decoded.name,
+            profilePic: decoded.picture
+        })
         setUserInfo(decoded);
-
         cookieManager.setUserInfo(decoded);
     }
   return (

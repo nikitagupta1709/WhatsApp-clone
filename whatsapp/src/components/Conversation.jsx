@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 import EmojiPicker from 'emoji-picker-react';
 import { SearchContainer, SearchInput } from './ContactList';
-import { messagesList } from '../mockData';
+// import { messagesList } from '../mockData';
 
 const Container = styled.div`
     display: flex;
@@ -63,7 +63,7 @@ export const Conversation = (props) => {
   const {selectedChat} = props;
   const [pickerVisible, setPickerVisible] = useState(false);
   const [text, setText] = useState("");
-  const [message,setMessage] = useState(messagesList);
+  const [message,setMessage] = useState([]);
 
   const onEmojiClick =(emojiObj) =>{
     setText(text+emojiObj.emoji);
