@@ -32,19 +32,27 @@ const ChatPlaceholder = styled.img`
   object-fit: contain;
 `;
 
-function App({userInfo}) {
-  const [selectedChat, setChat ] = useState();
+function App({ userInfo }) {
+  const [selectedChat, setChat] = useState();
+  const [refreshContactList, toggleRefreshContactList] = useState(false);
 
   return (
     <div className="App">
       <Container>
-        <ContactList setChat={setChat} userInfo={userInfo}/>
-        {selectedChat? 
-        <Conversation selectedChat={selectedChat} />: <Placeholder>
+        <ContactList setChat={setChat} userInfo={userInfo} refreshContactList={refreshContactList} />
+        {selectedChat ? (
+          <Conversation 
+            selectedChat={selectedChat} 
+            userInfo={userInfo} 
+            refreshContactList={() => 
+              toggleRefreshContactList(!refreshContactList)
+            } /> 
+          ): ( <Placeholder>
             <ChatPlaceholder src="/welcome_placeholder.jpg" />
             <span>Keep your phone connected</span>
             Whatsapp connects to your phone to sync messages.
-          </Placeholder>}
+          </Placeholder>
+          )}
       </Container>
     </div>
   );

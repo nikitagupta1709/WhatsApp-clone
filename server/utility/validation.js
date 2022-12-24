@@ -4,23 +4,22 @@ import * as yup from 'yup';
 export const validateCreateUser = async (req, res, next) => {
 
     const schema = yup.object().shape({
-        phoneNumber: yup.number().required(),
         name: yup.string().required(),
-        password: yup.string().required(),
+        email: yup.string().required(),
         profilePic: yup.string(),
     });
 
     await validate(schema, req.body, res, next)
 }
-export const validateLogin = async (req, res, next) => {
+// export const validateLogin = async (req, res, next) => {
 
-    const schema = yup.object().shape({
-        phoneNumber: yup.number().required(),
-        password: yup.string().required(),
-    });
+//     const schema = yup.object().shape({
+//         phoneNumber: yup.number().required(),
+//         password: yup.string().required(),
+//     });
 
-    await validate(schema, req.body, res, next)
-}
+//     await validate(schema, req.body, res, next)
+// }
 export const validateGetChannelList = async (req, res, next) => {
 
     const schema = yup.object().shape({
@@ -32,7 +31,7 @@ export const validateGetChannelList = async (req, res, next) => {
 export const validateSearchUser = async (req, res, next) => {
 
     const schema = yup.object().shape({
-        phone: yup.number().required()
+        email: yup.string().required()
     });
 
     await validate(schema, req.query, res, next)
@@ -44,7 +43,7 @@ export const validateCreateChannel = async (req, res, next) => {
         .of(
             yup.object().shape({
                 name: yup.string().required(),
-                _id: yup.string().required(),
+                email: yup.string().required(),
                 profilePic: yup.string(),
             })
         )
@@ -59,8 +58,8 @@ export const validateAddMessage = async (req, res, next) => {
     const schema = yup.object().shape({
         channelId: yup.string().required(),
         messages: yup.object().shape({
-            senderID: yup.string().required(),
-            message: yup.string().required(),
+            senderEmail: yup.string().required(),
+            text: yup.string().required(),
         }),
     });
     await validate(schema, req.body, res, next);

@@ -42,14 +42,22 @@ const MessageTime = styled.span`
 
 `;
 
-export const Contact = (props) => {
-    const { userData, setChat } = props;
-
+export const Contact = ({ userData, setChat, userInfo }) => {
+    const otherUser = 
+        userData.channelUsers?.find(
+        (userObj)=> userObj.email !== userInfo.email
+        ) || userData;
+    
+    // const lastMessage = userData.messages && userData.messages.length
+    // ? userData.messages[userData.messages.length - 1]
+    // :{};
+    console.log(otherUser, "otherUser");
+    
   return (
-    <ContactItem onClick={() => setChat(userData)}>
-        <ProfileIcon src={userData.profilePic} />
+    <ContactItem onClick={() => setChat(otherUser)}>
+        <ProfileIcon src={otherUser.profilePic} />
         <ContactInfo>
-            <ContactName>{userData.name}</ContactName>
+            <ContactName>{otherUser?.name}</ContactName>
             <MessageText>{userData?.lastText}</MessageText>
         </ContactInfo>
         <MessageTime>{userData?.lastTextTime}</MessageTime>

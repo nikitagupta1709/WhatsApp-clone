@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from "styled-components";
 import EmojiPicker from 'emoji-picker-react';
 import { SearchContainer, SearchInput } from './ContactList';
+import { httpManager } from '../manager/httpManager';
 // import { messagesList } from '../mockData';
 
 const Container = styled.div`
@@ -46,13 +47,13 @@ const MessageContainer = styled.div`
   overflow-y: auto;
 `
 const MessageDiv = styled.div`
-  justify-content: ${(props) => (props.isYours ? "flex-end":"flex-start")};
+  justify-content: ${(props) => (props.isYours ? "flex-end" : "flex-start")};
   display: flex;
   margin: 5px 15px;
 `
 const Message = styled.div`
   max-width:50%;
-  background:${(props) => (props.isYours ? "#daf8cb":"white")};
+  background:${(props) => (props.isYours ? "#daf8cb" : "white")};
   color: #303030;
   padding: 8px 10px;
   font-size:14px;
@@ -60,52 +61,88 @@ const Message = styled.div`
 `
 
 export const Conversation = (props) => {
-  const {selectedChat} = props;
+  const { selectedChat, userInfo, refreshContactList } = props;
   const [pickerVisible, setPickerVisible] = useState(false);
   const [text, setText] = useState("");
-  const [message,setMessage] = useState([]);
+  const [messageList, setMessageList] = useState([]);
 
-  const onEmojiClick =(emojiObj) =>{
-    setText(text+emojiObj.emoji);
+  const onEmojiClick = (emojiObj) => {
+    setText(text + emojiObj.emoji);
     setPickerVisible(false)
   }
 
-  const onEnterPress =(event) => {
-    if(event.key === "Enter"){
-      const messages = [...message];
-      messages.push({
-        id:0,
-        messageType:"TEXT",
+  // useEffect(()=>{
+  //   setMessageList(selectedChat.channelData.message);
+  // },[selectedChat]);
+
+  const onEnterPress = async (event) => {
+    let channelId = "";
+    if (event.key === "Enter") {
+      if (!messageList || !messageList.length) {
+        const channelUsers = [
+          {
+            email: userInfo.email,
+            name: userInfo.name,
+            profilePic: userInfo.picture,
+          },
+          {
+            email: selectedChat.email,
+            name: selectedChat.name,
+            profilePic: selectedChat.profilePic,
+          },
+        ];
+        // console.log("channelUsers ", channelUsers );
+
+        const channelResponse = await httpManager.createChannel({channelUsers });
+        // console.log("channelResponse", channelResponse);
+
+        channelId = channelResponse.data.responseData._id;
+        // console.log("channelId", channelId);
+        refreshContactList();
+      }
+
+      const messages = [...messageList];
+      const msgReqData = {
         text,
-        senderID: 0,
-        addedOn: "12:02 PM",
+        senderEmail: userInfo.email,
+        addedOn: new Date().getTime(),
+      }
+      await httpManager.sendMessage({
+        channelId,
+        messages: msgReqData
       });
-      setMessage(messages);
+
+      console.log("messageResponse", {
+        channelId,
+        msgReqData
+      })
+      messages.push(msgReqData);
+      setMessageList(messages);
       setText("");
-      
+
     }
   }
 
   return (
     <Container>
-        <ProfileHeader>
-          <ProfileImage src={selectedChat.profilePic}/>
-          {selectedChat.name}
-        </ProfileHeader> 
-        <MessageContainer>
-          {message.map((messageData) => (
-            <MessageDiv isYours={messageData.senderID === 0}>
-              <Message isYours={messageData.senderID === 0}>{messageData.text}</Message>
-            </MessageDiv>
-          ))}
-          {pickerVisible && (<EmojiPicker width="40%" margin="auto" height="1000px" onEmojiClick={onEmojiClick} />)}
-        </MessageContainer>
-        <ChatBox>
-          <SearchContainer>
-            <EmojiImage src={"/data.svg"} onClick={()=>setPickerVisible(!pickerVisible)}/>
-            <SearchInput placeholder='Type a message' value={text} onKeyDown={onEnterPress} onChange={(e) => setText(e.target.value)}/>
-          </SearchContainer>
-        </ChatBox>
+      <ProfileHeader>
+        <ProfileImage src={selectedChat.profilePic} />
+        {selectedChat.name}
+      </ProfileHeader>
+      <MessageContainer>
+        {messageList.map((messageData) => (
+          <MessageDiv key={messageData.addedOn} isYours={messageData.senderID === 0}>
+            <Message isYours={messageData.senderID === 0}>{messageData.text}</Message>
+          </MessageDiv>
+        ))}
+        {pickerVisible && (<EmojiPicker width="40%" margin="auto" height="1000px" onEmojiClick={onEmojiClick} />)}
+      </MessageContainer>
+      <ChatBox>
+        <SearchContainer>
+          <EmojiImage src={"/data.svg"} onClick={() => setPickerVisible(!pickerVisible)} />
+          <SearchInput placeholder='Type a message' value={text} onKeyDown={onEnterPress} onChange={(e) => setText(e.target.value)} />
+        </SearchContainer>
+      </ChatBox>
 
     </Container>
   )

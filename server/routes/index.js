@@ -1,5 +1,5 @@
-import {validateCreateUser, validateLogin, validateCreateChannel, validateSearchUser, validateGetChannelList, validateAddMessage  } from '../utility/validation.js'
-import { createChannel, createUser, getChannelList, loginUser, searchUser, sendMesage } from '../controllers/controller.js';
+import {validateCreateUser, validateCreateChannel, validateSearchUser, validateGetChannelList, validateAddMessage  } from '../utility/validation.js'
+import { createChannel, createUser, getChannelList, searchUser, sendMesage } from '../controllers/controller.js';
 
 const applyRoutes = (app) => {
     app.get('/', (req, res) => {
@@ -7,7 +7,7 @@ const applyRoutes = (app) => {
     })
     app.post('/user', validateCreateUser ,createUser)
 
-    app.post('/login', validateLogin, loginUser)
+    // app.post('/login', validateLogin, loginUser)
 
     app.post('/channel', validateCreateChannel, createChannel)
     

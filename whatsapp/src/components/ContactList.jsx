@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { Contact } from './Contact';
-import { contactList } from '../mockData';
 import validateEmail from '../utility/utility';
+import { contactList } from '../mockData';
 import { httpManager } from '../manager/httpManager';
 
 const Container = styled.div`
@@ -54,10 +54,22 @@ const SearchResults = styled.div`
     width: 100%;
 `
 
-export const ContactList = (props) => {
-    const {setChat, userInfo} = props;
+export const ContactList = ({setChat, userInfo, refreshContactList}) => {
     const [searchData, setSearchData] = useState("");
     const [searchResult, setSearchResult] = useState("");
+    const [contactList, setContactList] = useState([]);
+
+    const refreshContacts = async() => {
+        const contactListData = await httpManager.getChannelList(userInfo.email);
+        setContactList(contactListData.data.responseData);
+        setSearchData();
+        setSearchResult();
+    }
+
+    useEffect(()=> {
+        refreshContacts()
+
+    }, [refreshContactList]);
 
     const onSearchTeaxtChanged = async(searchText) => {
         setSearchData(searchText);
@@ -85,11 +97,11 @@ export const ContactList = (props) => {
         </SearchBox>
         {searchResult && (
                 <SearchResults>
-                    <Contact userData={searchResult} setChat={setChat} userInfo={userInfo}/>
+                    <Contact  userData={searchResult} setChat={setChat} userInfo={userInfo}/>
                 </SearchResults>
         )}
-        {contactList.map((userData) => (
-             <Contact key={userData._id} userData={userData} setChat={setChat}/>
+        {contactList?.map((userData) => (
+             <Contact key={userData._id} userData={userData} userInfo={userInfo} setChat={setChat}/>
         ))}
       </Container>
   )

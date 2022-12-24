@@ -6,7 +6,7 @@ import applyRoutes from './routes/index.js';
 const app = new express();
 
 configureExpressApp(app);
-const PORT = 3005;
+const PORT = 3001;
 
 const startServer = () => {
     Promise.all([connectDB()]).then(() => {
