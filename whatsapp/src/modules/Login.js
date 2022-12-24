@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import { GoogleLogin } from '@react-oauth/google';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import jwt_decode from "jwt-decode";
 import App from "../App.js"
+import cookieManager from '../manager/cookieManager.js';
 
 const Container = styled.div`
     display:flex;
@@ -56,11 +57,19 @@ const QRCode = styled.img`
 export const Login = () => {
     const [userInfo, setUserInfo] = useState();
 
+    useEffect(() => {
+        const userData = cookieManager.getUserInfo();
+        if(userData)
+            setUserInfo(userData);
+    }, []);
+
     const handleResponseFromGoogle = async (responseData) => {
         // console.log(responseData.credential);
         let decoded = jwt_decode(responseData.credential);
         // console.log(decoded);
         setUserInfo(decoded);
+
+        cookieManager.setUserInfo(decoded);
     }
   return (
     <>
