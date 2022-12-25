@@ -98,8 +98,8 @@ export const Conversation = (props) => {
 
         channelId = channelResponse.data.responseData._id;
         // console.log("channelId", channelId);
-        refreshContactList();
       }
+      refreshContactList();
 
       const messages = [...messageList];
       const msgReqData = {

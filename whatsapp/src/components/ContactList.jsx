@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { Contact } from './Contact';
 import validateEmail from '../utility/utility';
-import { contactList } from '../mockData';
+// import { contactList } from '../mockData';
 import { httpManager } from '../manager/httpManager';
 
 const Container = styled.div`
@@ -73,7 +73,8 @@ export const ContactList = ({setChat, userInfo, refreshContactList}) => {
 
     const onSearchTeaxtChanged = async(searchText) => {
         setSearchData(searchText);
-        if(!validateEmail(searchText)) return;
+        if(!validateEmail(searchText)) 
+            return;
            
         const userData = await httpManager.searchUser(searchText);
         // console.log(userData.data.responseData, "userData");
